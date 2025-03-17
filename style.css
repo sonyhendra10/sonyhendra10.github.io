@@ -1,0 +1,145 @@
+/* 
+====================================
+🌍 1. Global Styles (Gaya Umum)  
+====================================
+*/
+body {
+  background-color: #f8f9fa; /* Warna latar belakang utama */
+}
+
+/* 
+  ====================================
+  🟦 2. Navbar Styles  
+  ====================================
+  */
+.navbar {
+  position: sticky;
+  top: 0;
+  width: 100%;
+  z-index: 1000;
+  transition: top 0.3s ease-in-out; /* Efek transisi navbar saat scroll */
+  background: white; /* Warna dasar navbar */
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Efek bayangan navbar */
+}
+
+/* Gaya ikon dalam navbar */
+.navbar-icons a {
+  color: #333; /* Warna ikon navbar */
+}
+
+/* 
+  ====================================
+  📦 3. Card Styles  
+  ====================================
+  */
+.card {
+  border-radius: 15px; /* Membuat sudut kartu lebih membulat */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Efek bayangan lembut */
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out; /* Efek hover */
+}
+
+.card:hover {
+  transform: translateY(-3px); /* Efek mengangkat kartu sedikit saat hover */
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* 
+  ====================================
+  📊 4. Metric Card Styles  
+  ====================================
+  */
+.metric-card {
+  text-align: center; /* Pusatkan teks dalam kartu */
+  padding: 20px;
+  transition: transform 0.2s ease-in-out;
+}
+
+.metric-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Gaya ikon dalam kartu metrik */
+.metric-icon {
+  font-size: 30px; /* Ukuran ikon lebih besar */
+  margin-bottom: 10px;
+}
+
+/* Warna latar belakang berdasarkan metrik */
+.bg-temperature {
+  background: #ffe5e5; /* Warna merah muda untuk suhu */
+}
+
+.bg-ppm {
+  background: #e5f6ff; /* Warna biru muda untuk PPM */
+}
+
+.bg-ph {
+  background: #e5ffe5; /* Warna hijau muda untuk pH */
+}
+
+.bg-humidity {
+  background: #f2e5ff; /* Warna ungu muda untuk kelembaban */
+}
+
+/* 
+  ====================================
+  📈 5. Chart Styles  
+  ====================================
+  */
+#historicalChart,
+#realtimeChart {
+  max-height: 300px !important; /* Batasi tinggi maksimal grafik */
+}
+
+/* 
+====================================
+🌙 Dark Mode Styles  
+====================================
+*/
+.dark-mode {
+  background-color: #343a40 !important; /* Latar belakang gelap */
+  color: #fff !important; /* Warna teks putih */
+}
+
+/* Navbar dalam mode gelap */
+.dark-mode .navbar {
+  background-color: #212529 !important;
+  box-shadow: 0 2px 5px rgba(255, 255, 255, 0.1);
+}
+
+/* Mengubah warna teks "IoT Dashboard" menjadi putih dalam dark mode */
+.dark-mode .navbar .navbar-brand {
+  color: #ffffff !important;
+}
+
+/* Mengubah warna ikon navbar menjadi putih dalam dark mode */
+.dark-mode .navbar-icons a {
+  color: #ffffff !important;
+}
+
+/* Kartu dalam mode gelap */
+.dark-mode .card {
+  background-color: #1e1e1e !important;
+  color: #ffffff !important;
+}
+
+/* Metric card dalam mode gelap */
+.dark-mode .metric-card {
+  background-color: #333 !important;
+  color: #fff !important;
+}
+/* Mengubah warna teks pada chart dalam Dark Mode */
+.dark-mode h6 {
+  color: #ffffff !important; /* Mengubah teks judul chart menjadi putih */
+}
+
+/* Mengubah warna background canvas saat Dark Mode */
+.dark-mode canvas {
+  background-color: rgba(
+    255,
+    255,
+    255,
+    0.708
+  ) !important; /* Warna lebih cerah saat Dark Mode */
+}
