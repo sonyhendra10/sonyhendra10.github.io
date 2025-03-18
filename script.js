@@ -1,302 +1,418 @@
-/* 
-====================================
-🌍 1. Global Styles (Gaya Umum)  
-====================================
-*/
-body {
-  background-color: #f8f9fa; /* Warna latar belakang utama */
-}
-body.modal-open {
-  /* overflow: auto !important; Pastikan scrolling tetap aktif */
-  padding-right: 0 !important; /* Hindari geser layout akibat scrollbar */
-}
-.modal-open {
-  overflow: hidden !important;
-  height: 100%;
-}
+// Toggle Dark Mode
+// Menambahkan event listener untuk tombol Dark Mode
+// Mengaktifkan atau menonaktifkan mode gelap pada body
+document
+  .getElementById("toggleDarkMode")
+  .addEventListener("click", function () {
+    document.body.classList.toggle("dark-mode");
+  });
 
-/* 
-  ====================================
-  🟦 2. Navbar Styles  
-  ====================================
-  */
-.navbar {
-  position: sticky;
-  top: 0;
-  width: 100%;
-  z-index: 1000;
-  transition: top 0.3s ease-in-out; /* Efek transisi navbar saat scroll */
-  background: white; /* Warna dasar navbar */
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Efek bayangan navbar */
-}
+// Inisialisasi grafik menggunakan Chart.js
+const ctxHistorical = document
+  .getElementById("historicalChart")
+  .getContext("2d");
+const ctxRealtime = document.getElementById("realtimeChart").getContext("2d");
 
-/* Gaya ikon dalam navbar */
-.navbar-icons a {
-  color: #333; /* Warna ikon navbar */
-}
+// Data Dummy untuk Historical Trends
+const historicalChart = new Chart(ctxHistorical, {
+  type: "line",
+  data: {
+    labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun"],
+    datasets: [
+      {
+        label: "Temperature (°C)",
+        data: [22, 24, 23, 25, 26, 24],
+        borderColor: "red",
+        backgroundColor: "rgba(255, 0, 0, 0.1)",
+        fill: true,
+      },
+      {
+        label: "Humidity (%)",
+        data: [60, 62, 64, 63, 61, 65],
+        borderColor: "blue",
+        backgroundColor: "rgba(0, 0, 255, 0.1)",
+        fill: true,
+      },
+      {
+        label: "pH Level",
+        data: [6.5, 7.0, 6.8, 7.2, 7.1, 7.3],
+        borderColor: "green",
+        backgroundColor: "rgba(0, 128, 0, 0.1)",
+        fill: true,
+      },
+      {
+        label: "PPM",
+        data: [400, 420, 450, 480, 460, 490],
+        borderColor: "purple",
+        backgroundColor: "rgba(128, 0, 128, 0.1)",
+        fill: true,
+      },
+    ],
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+  },
+});
 
-/* 
-  ====================================
-  📦 3. Card Styles  
-  ====================================
-  */
-.card {
-  border-radius: 15px; /* Membuat sudut kartu lebih membulat */
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Efek bayangan lembut */
-  /* transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out; Efek hover */
-}
+// Data Dummy untuk Real-time Monitoring (Diupdate Setiap 2 Detik)
+const realtimeChart = new Chart(ctxRealtime, {
+  type: "line",
+  data: {
+    labels: Array.from({ length: 10 }, (_, i) => `${i * 2}s`),
+    datasets: [
+      {
+        label: "Temperature (°C)",
+        data: Array.from({ length: 10 }, () =>
+          (Math.random() * (30 - 20) + 20).toFixed(1)
+        ),
+        borderColor: "red",
+        backgroundColor: "rgba(255, 0, 0, 0.1)",
+        fill: true,
+      },
+      {
+        label: "Humidity (%)",
+        data: Array.from({ length: 10 }, () =>
+          (Math.random() * (80 - 50) + 50).toFixed(1)
+        ),
+        borderColor: "blue",
+        backgroundColor: "rgba(0, 0, 255, 0.1)",
+        fill: true,
+      },
+      {
+        label: "pH Level",
+        data: Array.from({ length: 10 }, () =>
+          (Math.random() * (8 - 6) + 6).toFixed(2)
+        ),
+        borderColor: "green",
+        backgroundColor: "rgba(0, 128, 0, 0.1)",
+        fill: true,
+      },
+      {
+        label: "PPM",
+        data: Array.from({ length: 10 }, () =>
+          Math.floor(Math.random() * (600 - 300) + 300)
+        ),
+        borderColor: "purple",
+        backgroundColor: "rgba(128, 0, 128, 0.1)",
+        fill: true,
+      },
+    ],
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+  },
+});
 
-.card:hover {
-  /* transform: translateY(-3px); Efek mengangkat kartu sedikit saat hover */
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
-}
+// Simulasi Data Real-time (Update Setiap 2 Detik)
+setInterval(() => {
+  const newTime = `${
+    parseInt(realtimeChart.data.labels[realtimeChart.data.labels.length - 1]) +
+    2
+  }s`;
 
-/* 
-  ====================================
-  📊 4. Metric Card Styles  
-  ====================================
-  */
-.metric-card {
-  text-align: center; /* Pusatkan teks dalam kartu */
-  padding: 20px;
-  /* transition: transform 0.2s ease-in-out; */
-}
+  // Geser data ke kiri jika lebih dari 10 data
+  if (realtimeChart.data.labels.length >= 10) {
+    realtimeChart.data.labels.shift();
+    realtimeChart.data.datasets.forEach((dataset) => dataset.data.shift());
+  }
 
-.metric-card:hover {
-  /* transform: translateY(-5px); */
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
-}
+  realtimeChart.data.labels.push(newTime);
+  realtimeChart.data.datasets[0].data.push(
+    (Math.random() * (30 - 20) + 20).toFixed(1)
+  ); // Temperature
+  realtimeChart.data.datasets[1].data.push(
+    (Math.random() * (80 - 50) + 50).toFixed(1)
+  ); // Humidity
+  realtimeChart.data.datasets[2].data.push(
+    (Math.random() * (8 - 6) + 6).toFixed(2)
+  ); // pH Level
+  realtimeChart.data.datasets[3].data.push(
+    Math.floor(Math.random() * (600 - 300) + 300)
+  ); // PPM
 
-/* Gaya ikon dalam kartu metrik */
-.metric-icon {
-  font-size: 30px; /* Ukuran ikon lebih besar */
-  margin-bottom: 10px;
-}
+  realtimeChart.update();
+}, 2000);
 
-/* Warna latar belakang berdasarkan metrik */
-.bg-temperature {
-  background: #ffe5e5; /* Warna merah muda untuk suhu */
-}
+// Fungsi untuk menampilkan alert berdasarkan kondisi terbaru
+function updateAlerts() {
+  const alertsContainer = document.getElementById("alertsContainer");
+  alertsContainer.innerHTML = ""; // Hapus alert lama
 
-.bg-ppm {
-  background: #e5f6ff; /* Warna biru muda untuk PPM */
-}
+  const temp = parseFloat(realtimeChart.data.datasets[0].data.slice(-1)[0]); // Temperature
+  const humidity = parseFloat(realtimeChart.data.datasets[1].data.slice(-1)[0]); // Humidity
+  const phLevel = parseFloat(realtimeChart.data.datasets[2].data.slice(-1)[0]); // pH Level
+  const ppm = parseInt(realtimeChart.data.datasets[3].data.slice(-1)[0]); // PPM
 
-.bg-ph {
-  background: #e5ffe5; /* Warna hijau muda untuk pH */
-}
+  // Cek batas kondisi untuk alert
+  if (temp > 26) {
+    alertsContainer.innerHTML += `<div class="alert alert-danger">🔥 Temperature exceeded threshold (${temp}°C)</div>`;
+  }
+  if (ppm > 500) {
+    alertsContainer.innerHTML += `<div class="alert alert-warning">⚠️ PPM level approaching critical value (${ppm})</div>`;
+  }
+  if (phLevel < 6.5 || phLevel > 7.5) {
+    alertsContainer.innerHTML += `<div class="alert alert-warning">⚠️ pH Level out of safe range (${phLevel})</div>`;
+  }
+  if (humidity < 55) {
+    alertsContainer.innerHTML += `<div class="alert alert-info">💧 Humidity is getting low (${humidity}%)</div>`;
+  }
 
-.bg-humidity {
-  background: #f2e5ff; /* Warna ungu muda untuk kelembaban */
-}
-
-/* 
-  ====================================
-  📈 5. Chart Styles  
-  ====================================
-  */
-#historicalChart,
-#realtimeChart {
-  max-height: 300px !important; /* Batasi tinggi maksimal grafik */
-}
-
-/* Tombol Profesional dengan Highlight Halus */
-.btn-primary {
-  background-color: #3c5976; /* Warna abu-abu tua yang profesional */
-  color: white;
-  padding: 12px 24px;
-  font-size: 16px;
-  font-weight: 500;
-  border: 1px solid #343a40; /* Border senada dengan tombol */
-  border-radius: 50px; /* Sudut yang lebih halus */
-  transition: all 0.3s ease; /* Transisi yang halus */
-  cursor: pointer;
-  text-transform: uppercase; /* Membuat huruf lebih tegas */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Bayangan halus */
-}
-
-/* Efek Hover - Highlight Halus */
-.btn-primary:hover {
-  background-color: #4a555f; /* Warna abu-abu lebih gelap saat hover */
-  border-color: #4a555f; /* Border berubah saat hover */
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); /* Bayangan lebih tajam */
-}
-
-/* Efek Aktif (klik) - Menambah Depth */
-.btn-primary:active {
-  transform: translateY(2px); /* Tombol turun sedikit saat diklik */
-  box-shadow: 0 2px 5px rgba(207, 203, 203, 0.15); /* Bayangan lebih halus */
-}
-
-/* Fokus dengan Highlight Halus */
-.btn-primary:focus {
-  outline: none; /* Menghilangkan outline default */
-  box-shadow: 0 0 0 0.25rem rgba(132, 148, 164, 0.25); /* Fokus dengan bayangan biru halus */
-}
-
-/* Responsif untuk perangkat lebih kecil */
-@media (max-width: 768px) {
-  .btn-primary {
-    padding: 10px 20px; /* Menyesuaikan padding untuk perangkat kecil */
-    font-size: 14px; /* Ukuran font sedikit lebih kecil */
+  // Jika tidak ada alert, tampilkan pesan default
+  if (alertsContainer.innerHTML === "") {
+    alertsContainer.innerHTML = `<div class="alert alert-success">✅ All parameters are normal</div>`;
   }
 }
 
-/* 
-====================================
-🌙 Dark Mode Styles  
-====================================
-*/
-.dark-mode {
-  background-color: #343a40 !important; /* Latar belakang gelap */
-  color: #fff !important; /* Warna teks putih */
+// Panggil updateAlerts setiap 2 detik bersamaan dengan pembaruan data real-time
+setInterval(updateAlerts, 2000);
+
+// Simpan nilai sebelumnya untuk menghitung perubahan
+let prevTemp = 24.5;
+let prevPPM = 450;
+let prevPH = 7.2;
+let prevHumidity = 65;
+
+function updateMetricCards() {
+  // Ambil nilai terbaru dari data real-time chart
+  const newTemp = parseFloat(realtimeChart.data.datasets[0].data.slice(-1)[0]);
+  const newPPM = parseInt(realtimeChart.data.datasets[3].data.slice(-1)[0]);
+  const newPH = parseFloat(realtimeChart.data.datasets[2].data.slice(-1)[0]);
+  const newHumidity = parseFloat(
+    realtimeChart.data.datasets[1].data.slice(-1)[0]
+  );
+
+  // Hitung perubahan
+  const tempDiff = (newTemp - prevTemp).toFixed(1);
+  const ppmDiff = newPPM - prevPPM;
+  const phDiff = (newPH - prevPH).toFixed(2);
+  const humidityDiff = (newHumidity - prevHumidity).toFixed(1);
+
+  // Update nilai pada card
+  document.getElementById("tempValue").innerText = `${newTemp}°C`;
+  document.getElementById("ppmValue").innerText = newPPM;
+  document.getElementById("phValue").innerText = newPH;
+  document.getElementById("humidityValue").innerText = `${newHumidity}%`;
+
+  // Update indikator perubahan
+  updateChangeIndicator("tempChange", tempDiff, "°C");
+  updateChangeIndicator("ppmChange", ppmDiff, "");
+  updateChangeIndicator("phChange", phDiff, "");
+  updateChangeIndicator("humidityChange", humidityDiff, "%");
+
+  // Simpan nilai terbaru sebagai nilai sebelumnya untuk iterasi berikutnya
+  prevTemp = newTemp;
+  prevPPM = newPPM;
+  prevPH = newPH;
+  prevHumidity = newHumidity;
 }
 
-/* Navbar dalam mode gelap */
-.dark-mode .navbar {
-  background-color: #212529 !important;
-  box-shadow: 0 2px 5px rgba(255, 255, 255, 0.1);
-}
+function updateChangeIndicator(elementId, diff, unit) {
+  const element = document.getElementById(elementId);
 
-/* Mengubah warna teks "IoT Dashboard" menjadi putih dalam dark mode */
-.dark-mode .navbar .navbar-brand {
-  color: #ffffff !important;
-}
-
-/* Mengubah warna ikon navbar menjadi putih dalam dark mode */
-.dark-mode .navbar-icons a {
-  color: #ffffff !important;
-}
-
-/* Kartu dalam mode gelap */
-.dark-mode .card {
-  background-color: #1e1e1e !important;
-  color: #ffffff !important;
-}
-
-/* Metric card dalam mode gelap */
-.dark-mode .metric-card {
-  background-color: #333 !important;
-  color: #fff !important;
-}
-/* Mengubah warna teks pada chart dalam Dark Mode */
-.dark-mode h6 {
-  color: #ffffff !important; /* Mengubah teks judul chart menjadi putih */
-}
-
-/* Mengubah warna background canvas saat Dark Mode */
-.dark-mode canvas {
-  background-color: rgba(
-    255,
-    255,
-    255,
-    0.708
-  ) !important; /* Warna lebih cerah saat Dark Mode */
-}
-.dark-mode .lightbox-close {
-  color: rgb(253, 4, 4); /* Mengubah warna "X" menjadi putih */
-}
-
-.dark-mode .lightbox-close:hover {
-  color: #ff4d4d; /* Saat di-hover, jadi merah muda */
-}
-
-.lightbox {
-  display: none;
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.5);
-  justify-content: center;
-  align-items: center;
-  z-index: 1050; /* Pastikan overlay di atas elemen lain */
-}
-
-.lightbox-content {
-  background: white;
-  padding: 20px;
-  width: 70%;
-  max-width: 800px; /* Batasan lebar maksimal */
-  height: 90%;
-  max-height: 1000px; /* Batasan tinggi maksimal */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  position: relative;
-  border-radius: 10px;
-}
-
-.lightbox-close {
-  position: absolute;
-  top: 10px;
-  right: 15px;
-  font-size: 24px;
-  cursor: pointer;
-}
-
-@media (max-width: 768px) {
-  .lightbox-content {
-    width: 90%;
-    height: 70%;
+  if (diff > 0) {
+    element.innerText = `↑ ${diff}${unit}`;
+    element.className = "text-success"; // Warna hijau untuk naik
+  } else if (diff < 0) {
+    element.innerText = `↓ ${Math.abs(diff)}${unit}`;
+    element.className = "text-danger"; // Warna merah untuk turun
+  } else {
+    element.innerText = `- 0${unit}`;
+    element.className = "text-muted"; // Warna abu-abu jika tidak berubah
   }
 }
 
-/* Styling tombol toggle */
-.switch {
-  position: relative;
-  display: inline-block;
-  width: 50px;
-  height: 26px;
+// Jalankan update setiap 2 detik bersamaan dengan pembaruan data real-time
+setInterval(updateMetricCards, 2000);
+
+// Ambil elemen dropdown
+const timeRangeSelect = document.getElementById("timeRange");
+
+// Fungsi untuk mendapatkan jumlah hari dalam bulan tertentu
+function getDaysInMonth() {
+  const today = new Date();
+  const year = today.getFullYear();
+  const month = today.getMonth() + 1; // Bulan dalam JavaScript dimulai dari 0 (Januari = 0)
+  return new Date(year, month, 0).getDate(); // Mengambil jumlah hari dalam bulan tersebut
 }
 
-/* Sembunyikan input checkbox */
-.switch input {
-  opacity: 0;
-  width: 0;
-  height: 0;
+// Fungsi untuk memperbarui data grafik Historical Trends berdasarkan rentang waktu
+function updateHistoricalChart(range) {
+  let labels = [];
+  let tempData = [];
+  let humidityData = [];
+  let phData = [];
+  let ppmData = [];
+
+  if (range === "month") {
+    // Data untuk bulan ini (jumlah hari disesuaikan dengan bulan saat ini)
+    const daysInMonth = getDaysInMonth();
+    labels = Array.from({ length: daysInMonth }, (_, i) => `Day ${i + 1}`);
+    tempData = Array.from(
+      { length: daysInMonth },
+      () => Math.floor(Math.random() * 5) + 22
+    );
+    humidityData = Array.from(
+      { length: daysInMonth },
+      () => Math.floor(Math.random() * 10) + 55
+    );
+    phData = Array.from({ length: daysInMonth }, () =>
+      (Math.random() * 1 + 6.5).toFixed(1)
+    );
+    ppmData = Array.from(
+      { length: daysInMonth },
+      () => Math.floor(Math.random() * 100) + 400
+    );
+  } else if (range === "7d") {
+    // Data untuk 7 hari terakhir
+    labels = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+    tempData = [24, 25, 26, 27, 26, 25, 24];
+    humidityData = [61, 62, 63, 64, 65, 63, 61];
+    phData = [6.8, 7.0, 7.1, 7.2, 7.3, 7.0, 6.9];
+    ppmData = [420, 440, 460, 480, 470, 460, 450];
+  } else if (range === "24h") {
+    // Data untuk 24 jam terakhir
+    labels = ["00:00", "06:00", "12:00", "18:00", "00:00"];
+    tempData = [24, 25, 26, 27, 25];
+    humidityData = [62, 63, 64, 65, 63];
+    phData = [7.0, 7.2, 7.1, 6.9, 7.0];
+    ppmData = [430, 450, 470, 460, 440];
+  } else if (range === "1h") {
+    // Data untuk 1 jam terakhir (setiap 10 menit)
+    labels = ["00:00", "00:10", "00:20", "00:30", "00:40", "00:50", "01:00"];
+    tempData = [25, 25.5, 26, 26.5, 27, 26.5, 26];
+    humidityData = [63, 63.5, 64, 64.5, 65, 64.5, 64];
+    phData = [7.1, 7.0, 6.9, 7.0, 7.1, 7.0, 6.9];
+    ppmData = [440, 445, 450, 455, 460, 455, 450];
+  }
+
+  // Perbarui data chart dengan data yang telah dikumpulkan
+  historicalChart.data.labels = labels;
+  historicalChart.data.datasets[0].data = tempData;
+  historicalChart.data.datasets[1].data = humidityData;
+  historicalChart.data.datasets[2].data = phData;
+  historicalChart.data.datasets[3].data = ppmData;
+  historicalChart.update();
 }
 
-/* Gaya dasar slider */
-.slider {
-  position: absolute;
-  cursor: pointer;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: #ccc; /* Warna slider default */
-  transition: 0.4s;
-  border-radius: 34px;
-  display: flex;
-  align-items: center; /* Tengah vertikal */
-  padding: 4px; /* Biar ada ruang */
+// Setel dropdown ke "Last 7 Days" saat pertama kali halaman dimuat
+timeRangeSelect.value = "7d";
+
+// Tambahkan event listener ke dropdown agar data diperbarui saat pengguna memilih opsi baru
+timeRangeSelect.addEventListener("change", function () {
+  updateHistoricalChart(this.value);
+});
+
+// Panggil pertama kali untuk menampilkan data awal (default: last 7 days)
+updateHistoricalChart("7d");
+
+// document.addEventListener("DOMContentLoaded", function () {
+//   const tempModal = document.getElementById("tempModal");
+
+//   tempModal.addEventListener("hidden.bs.modal", function () {
+//     document.body.style.overflow = "auto"; // Pastikan scroll tetap berfungsi
+//     document.body.style.paddingRight = "0px"; // Reset padding agar layout tidak geser
+//   });
+// });
+
+// //Modal Temperature
+// document.getElementById("tempBtn").addEventListener("click", function () {
+//   fetch("temperature.html") // Mengambil konten temperature.html
+//     .then((response) => response.text())
+//     .then((data) => {
+//       document.getElementById("modalContent").innerHTML = data; // Masukkan konten ke dalam modal
+//       var tempModal = new bootstrap.Modal(document.getElementById("tempModal")); // Buat instance modal
+//       tempModal.show(); // Tampilkan modal
+//     })
+//     .catch((error) => console.error("Error loading temperature.html:", error));
+// });
+
+//overlay iframe temperature
+// Event listener untuk tombol Temperature
+document.getElementById("tempBtn").addEventListener("click", function () {
+  document.getElementById("tempIframe").src = "temperature.html";
+  document.getElementById("lightboxTemp").style.display = "flex";
+  document.body.style.overflow = "hidden"; // Mencegah scroll saat lightbox terbuka
+});
+
+// Event listener untuk tombol PPM
+document.getElementById("ppmBtn").addEventListener("click", function () {
+  document.getElementById("ppmIframe").src = "ppm.html";
+  document.getElementById("lightboxPPM").style.display = "flex";
+  document.body.style.overflow = "hidden"; // Mencegah scroll saat lightbox terbuka
+});
+
+// Event listener untuk tombol PH
+document.getElementById("phBtn").addEventListener("click", function () {
+  document.getElementById("phIframe").src = "ph.html";
+  document.getElementById("lightboxPH").style.display = "flex";
+  document.body.style.overflow = "hidden"; // Mencegah scroll saat lightbox terbuka
+});
+
+// Event listener untuk tombol HUMIDITY
+document.getElementById("humidityBtn").addEventListener("click", function () {
+  document.getElementById("humidityIframe").src = "humidity.html";
+  document.getElementById("lightboxHumidity").style.display = "flex";
+  document.body.style.overflow = "hidden"; // Mencegah scroll saat lightbox terbuka
+});
+
+// Fungsi untuk menutup lightbox berdasarkan ID
+function closeLightbox(lightboxId) {
+  document.getElementById(lightboxId).style.display = "none";
+  document.body.style.overflow = ""; // Mengembalikan scroll setelah lightbox ditutup
 }
 
-/* Bulatan dalam slider dengan ikon */
-.slider:before {
-  content: "🌞"; /* Default: Matahari */
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 16px; /* Ukuran ikon */
-  height: 26px;
-  width: 26px;
-  background-color: white;
-  color: black;
-  border-radius: 50%;
-  transition: 0.4s ease;
-  position: absolute;
-  left: 4px;
-}
+// Menutup lightbox jika klik di luar area iframe
+document
+  .getElementById("lightboxTemp")
+  .addEventListener("click", function (event) {
+    if (event.target === this) {
+      // Hanya jika klik di area lightbox, bukan iframe
+      closeLightbox("lightboxTemp");
+    }
+  });
 
-/* Saat toggle ON (dark mode aktif) */
-input:checked + .slider {
-  background-color: #444; /* Warna slider gelap */
-}
+document
+  .getElementById("lightboxPPM")
+  .addEventListener("click", function (event) {
+    if (event.target === this) {
+      closeLightbox("lightboxPPM");
+    }
+  });
 
-input:checked + .slider:before {
-  transform: translateX(26px); /* Gerakkan ke kanan */
-  content: "🌙"; /* Ganti ke bulan */
-  background-color: #f1c40f; /* Warna kuning */
-  color: black;
-}
+document
+  .getElementById("lightboxPH")
+  .addEventListener("click", function (event) {
+    if (event.target === this) {
+      closeLightbox("lightboxPH");
+    }
+  });
+
+document
+  .getElementById("lightboxHumidity")
+  .addEventListener("click", function (event) {
+    if (event.target === this) {
+      closeLightbox("lightboxHumidity");
+    }
+  });
+
+// document.getElementById("tempBtn").addEventListener("click", function () {
+//   alert("Checking Temperature level...");
+//   // window.location.href = "https://your-ppm-page.com";
+// });
+
+// document.getElementById("ppmBtn").addEventListener("click", function () {
+//   alert("Checking PPM level...");
+//   // window.location.href = "https://your-ppm-page.com";
+// });
+
+// document.getElementById("phBtn").addEventListener("click", function () {
+//   alert("Checking pH level...");
+//   // window.location.href = "https://your-ph-page.com";
+// });
+
+// document.getElementById("humidityBtn").addEventListener("click", function () {
+//   alert("Checking humidity level...");
+//   // window.location.href = "https://your-humidity-page.com";
+// });
