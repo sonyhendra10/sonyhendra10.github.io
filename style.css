@@ -6,6 +6,14 @@
 body {
   background-color: #f8f9fa; /* Warna latar belakang utama */
 }
+body.modal-open {
+  /* overflow: auto !important; Pastikan scrolling tetap aktif */
+  padding-right: 0 !important; /* Hindari geser layout akibat scrollbar */
+}
+.modal-open {
+  overflow: hidden !important;
+  height: 100%;
+}
 
 /* 
   ====================================
@@ -184,4 +192,111 @@ body {
     255,
     0.708
   ) !important; /* Warna lebih cerah saat Dark Mode */
+}
+.dark-mode .lightbox-close {
+  color: rgb(253, 4, 4); /* Mengubah warna "X" menjadi putih */
+}
+
+.dark-mode .lightbox-close:hover {
+  color: #ff4d4d; /* Saat di-hover, jadi merah muda */
+}
+
+.lightbox {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  justify-content: center;
+  align-items: center;
+  z-index: 1050; /* Pastikan overlay di atas elemen lain */
+}
+
+.lightbox-content {
+  background: white;
+  padding: 20px;
+  width: 70%;
+  max-width: 800px; /* Batasan lebar maksimal */
+  height: 90%;
+  max-height: 1000px; /* Batasan tinggi maksimal */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  position: relative;
+  border-radius: 10px;
+}
+
+.lightbox-close {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+@media (max-width: 768px) {
+  .lightbox-content {
+    width: 90%;
+    height: 70%;
+  }
+}
+
+/* Styling tombol toggle */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 50px;
+  height: 26px;
+}
+
+/* Sembunyikan input checkbox */
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+/* Gaya dasar slider */
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc; /* Warna slider default */
+  transition: 0.4s;
+  border-radius: 34px;
+  display: flex;
+  align-items: center; /* Tengah vertikal */
+  padding: 4px; /* Biar ada ruang */
+}
+
+/* Bulatan dalam slider dengan ikon */
+.slider:before {
+  content: "🌞"; /* Default: Matahari */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px; /* Ukuran ikon */
+  height: 26px;
+  width: 26px;
+  background-color: white;
+  color: black;
+  border-radius: 50%;
+  transition: 0.4s ease;
+  position: absolute;
+  left: 4px;
+}
+
+/* Saat toggle ON (dark mode aktif) */
+input:checked + .slider {
+  background-color: #444; /* Warna slider gelap */
+}
+
+input:checked + .slider:before {
+  transform: translateX(26px); /* Gerakkan ke kanan */
+  content: "🌙"; /* Ganti ke bulan */
+  background-color: #f1c40f; /* Warna kuning */
+  color: black;
 }
