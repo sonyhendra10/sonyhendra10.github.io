@@ -306,3 +306,113 @@ timeRangeSelect.addEventListener("change", function () {
 
 // Panggil pertama kali untuk menampilkan data awal (default: last 7 days)
 updateHistoricalChart("7d");
+
+// document.addEventListener("DOMContentLoaded", function () {
+//   const tempModal = document.getElementById("tempModal");
+
+//   tempModal.addEventListener("hidden.bs.modal", function () {
+//     document.body.style.overflow = "auto"; // Pastikan scroll tetap berfungsi
+//     document.body.style.paddingRight = "0px"; // Reset padding agar layout tidak geser
+//   });
+// });
+
+// //Modal Temperature
+// document.getElementById("tempBtn").addEventListener("click", function () {
+//   fetch("temperature.html") // Mengambil konten temperature.html
+//     .then((response) => response.text())
+//     .then((data) => {
+//       document.getElementById("modalContent").innerHTML = data; // Masukkan konten ke dalam modal
+//       var tempModal = new bootstrap.Modal(document.getElementById("tempModal")); // Buat instance modal
+//       tempModal.show(); // Tampilkan modal
+//     })
+//     .catch((error) => console.error("Error loading temperature.html:", error));
+// });
+
+//overlay iframe temperature
+// Event listener untuk tombol Temperature
+document.getElementById("tempBtn").addEventListener("click", function () {
+  document.getElementById("tempIframe").src = "temperature.html";
+  document.getElementById("lightboxTemp").style.display = "flex";
+  document.body.style.overflow = "hidden"; // Mencegah scroll saat lightbox terbuka
+});
+
+// Event listener untuk tombol PPM
+document.getElementById("ppmBtn").addEventListener("click", function () {
+  document.getElementById("ppmIframe").src = "ppm.html";
+  document.getElementById("lightboxPPM").style.display = "flex";
+  document.body.style.overflow = "hidden"; // Mencegah scroll saat lightbox terbuka
+});
+
+// Event listener untuk tombol PH
+document.getElementById("phBtn").addEventListener("click", function () {
+  document.getElementById("phIframe").src = "ph.html";
+  document.getElementById("lightboxPH").style.display = "flex";
+  document.body.style.overflow = "hidden"; // Mencegah scroll saat lightbox terbuka
+});
+
+// Event listener untuk tombol HUMIDITY
+document.getElementById("humidityBtn").addEventListener("click", function () {
+  document.getElementById("humidityIframe").src = "humidity.html";
+  document.getElementById("lightboxHumidity").style.display = "flex";
+  document.body.style.overflow = "hidden"; // Mencegah scroll saat lightbox terbuka
+});
+
+// Fungsi untuk menutup lightbox berdasarkan ID
+function closeLightbox(lightboxId) {
+  document.getElementById(lightboxId).style.display = "none";
+  document.body.style.overflow = ""; // Mengembalikan scroll setelah lightbox ditutup
+}
+
+// Menutup lightbox jika klik di luar area iframe
+document
+  .getElementById("lightboxTemp")
+  .addEventListener("click", function (event) {
+    if (event.target === this) {
+      // Hanya jika klik di area lightbox, bukan iframe
+      closeLightbox("lightboxTemp");
+    }
+  });
+
+document
+  .getElementById("lightboxPPM")
+  .addEventListener("click", function (event) {
+    if (event.target === this) {
+      closeLightbox("lightboxPPM");
+    }
+  });
+
+document
+  .getElementById("lightboxPH")
+  .addEventListener("click", function (event) {
+    if (event.target === this) {
+      closeLightbox("lightboxPH");
+    }
+  });
+
+document
+  .getElementById("lightboxHumidity")
+  .addEventListener("click", function (event) {
+    if (event.target === this) {
+      closeLightbox("lightboxHumidity");
+    }
+  });
+
+// document.getElementById("tempBtn").addEventListener("click", function () {
+//   alert("Checking Temperature level...");
+//   // window.location.href = "https://your-ppm-page.com";
+// });
+
+// document.getElementById("ppmBtn").addEventListener("click", function () {
+//   alert("Checking PPM level...");
+//   // window.location.href = "https://your-ppm-page.com";
+// });
+
+// document.getElementById("phBtn").addEventListener("click", function () {
+//   alert("Checking pH level...");
+//   // window.location.href = "https://your-ph-page.com";
+// });
+
+// document.getElementById("humidityBtn").addEventListener("click", function () {
+//   alert("Checking humidity level...");
+//   // window.location.href = "https://your-humidity-page.com";
+// });
