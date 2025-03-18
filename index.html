@@ -29,7 +29,10 @@
           <a href="#" class="me-3"><i class="fas fa-bell fa-lg"></i></a>
           <a href="#" class="me-3"><i class="fas fa-cog fa-lg"></i></a>
           <a href="#" class="me-3"><i class="fas fa-user-circle fa-lg"></i></a>
-          <button class="btn btn-dark" id="toggleDarkMode">Dark Mode</button>
+          <label class="switch">
+            <input type="checkbox" id="toggleDarkMode" />
+            <span class="slider"></span>
+          </label>
         </div>
       </div>
     </nav>
@@ -43,7 +46,9 @@
             <h6>Temperature</h6>
             <h3 id="tempValue">24.5°C</h3>
             <small id="tempChange" class="text-success">↑ 1.2°C</small>
-            <button class="btn btn-primary mt-2">Check Temperature</button>
+            <button class="btn btn-primary mt-2" id="tempBtn">
+              Check Temperature
+            </button>
           </div>
         </div>
         <div class="col">
@@ -52,7 +57,9 @@
             <h6>PPM Value</h6>
             <h3 id="ppmValue">450</h3>
             <small id="ppmChange" class="text-danger">↓ 30</small>
-            <button class="btn btn-primary mt-2">Check PPM Level</button>
+            <button class="btn btn-primary mt-2" id="ppmBtn">
+              Check PPM Level
+            </button>
           </div>
         </div>
         <div class="col">
@@ -61,7 +68,9 @@
             <h6>pH Level</h6>
             <h3 id="phValue">7.2</h3>
             <small id="phChange" class="text-success">↑ 0.3</small>
-            <button class="btn btn-primary mt-2">Check pH Level</button>
+            <button class="btn btn-primary mt-2" id="phBtn">
+              Check pH Level
+            </button>
           </div>
         </div>
         <div class="col">
@@ -70,11 +79,71 @@
             <h6>Humidity</h6>
             <h3 id="humidityValue">65%</h3>
             <small id="humidityChange" class="text-danger">↓ 5%</small>
-            <button class="btn btn-primary mt-2">Check Humidity Level</button>
+            <button class="btn btn-primary mt-2" id="humidityBtn">
+              Check Humidity Level
+            </button>
           </div>
         </div>
       </div>
-
+      <!-- Lightbox Overlay -->
+      <div id="lightboxTemp" class="lightbox">
+        <div class="lightbox-content">
+          <span class="lightbox-close" onclick="closeLightbox('lightboxTemp')"
+            >&times;</span
+          >
+          <iframe
+            id="tempIframe"
+            src=""
+            width="100%"
+            height="100%"
+            style="border: none"
+          ></iframe>
+        </div>
+      </div>
+      <div id="lightboxPPM" class="lightbox">
+        <div class="lightbox-content">
+          <span class="lightbox-close" onclick="closeLightbox('lightboxPPM')"
+            >&times;</span
+          >
+          <iframe
+            id="ppmIframe"
+            src=""
+            width="100%"
+            height="100%"
+            style="border: none"
+          ></iframe>
+        </div>
+      </div>
+      <div id="lightboxPH" class="lightbox">
+        <div class="lightbox-content">
+          <span class="lightbox-close" onclick="closeLightbox('lightboxPH')"
+            >&times;</span
+          >
+          <iframe
+            id="phIframe"
+            src=""
+            width="100%"
+            height="100%"
+            style="border: none"
+          ></iframe>
+        </div>
+      </div>
+      <div id="lightboxHumidity" class="lightbox">
+        <div class="lightbox-content">
+          <span
+            class="lightbox-close"
+            onclick="closeLightbox('lightboxHumidity')"
+            >&times;</span
+          >
+          <iframe
+            id="humidityIframe"
+            src=""
+            width="100%"
+            height="100%"
+            style="border: none"
+          ></iframe>
+        </div>
+      </div>
       <!-- Charts Section -->
       <div class="row mt-4">
         <!-- Historical Trends Chart -->
