@@ -92,6 +92,48 @@ body {
   max-height: 300px !important; /* Batasi tinggi maksimal grafik */
 }
 
+/* Tombol Profesional dengan Highlight Halus */
+.btn-primary {
+  background-color: #3c5976; /* Warna abu-abu tua yang profesional */
+  color: white;
+  padding: 12px 24px;
+  font-size: 16px;
+  font-weight: 500;
+  border: 1px solid #343a40; /* Border senada dengan tombol */
+  border-radius: 50px; /* Sudut yang lebih halus */
+  transition: all 0.3s ease; /* Transisi yang halus */
+  cursor: pointer;
+  text-transform: uppercase; /* Membuat huruf lebih tegas */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Bayangan halus */
+}
+
+/* Efek Hover - Highlight Halus */
+.btn-primary:hover {
+  background-color: #4a555f; /* Warna abu-abu lebih gelap saat hover */
+  border-color: #4a555f; /* Border berubah saat hover */
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); /* Bayangan lebih tajam */
+}
+
+/* Efek Aktif (klik) - Menambah Depth */
+.btn-primary:active {
+  transform: translateY(2px); /* Tombol turun sedikit saat diklik */
+  box-shadow: 0 2px 5px rgba(207, 203, 203, 0.15); /* Bayangan lebih halus */
+}
+
+/* Fokus dengan Highlight Halus */
+.btn-primary:focus {
+  outline: none; /* Menghilangkan outline default */
+  box-shadow: 0 0 0 0.25rem rgba(132, 148, 164, 0.25); /* Fokus dengan bayangan biru halus */
+}
+
+/* Responsif untuk perangkat lebih kecil */
+@media (max-width: 768px) {
+  .btn-primary {
+    padding: 10px 20px; /* Menyesuaikan padding untuk perangkat kecil */
+    font-size: 14px; /* Ukuran font sedikit lebih kecil */
+  }
+}
+
 /* 
 ====================================
 🌙 Dark Mode Styles  
